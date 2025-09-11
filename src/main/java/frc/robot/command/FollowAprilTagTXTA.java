@@ -32,20 +32,19 @@ public class FollowAprilTagTXTA extends Command {
         double tx = vision.getTx();
         double ta = vision.getTa();
 
-        // Se já chegou e ainda está dentro da histerese → fica parado
+
         if (holdingPosition && ta >= (targetArea - hysteresis)) {
             setDriveSpeeds(0, 0);
             return;
         }
 
-        // Se chegou agora no alvo → ativa holding
+       
         if (ta >= targetArea) {
             holdingPosition = true;
             setDriveSpeeds(0, 0);
             return;
         }
 
-        // Caso contrário → persegue o alvo
         holdingPosition = false;
 
         double kP_turn = 0.03;
