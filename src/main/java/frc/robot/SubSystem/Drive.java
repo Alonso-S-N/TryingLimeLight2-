@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Drive extends SubsystemBase {
 
-  private final Encoder encodin = new Encoder(0,1, false, Encoder.EncodingType.k4X);
+  //private final Encoder encodin = new Encoder(0,1, false, Encoder.EncodingType.k4X);
   // Motores
   public final VictorSPX m_leftDrive  = new VictorSPX(Constants.LMot);
   public final VictorSPX m_rightDrive = new VictorSPX(Constants.RMot);
   public final VictorSPX m_rightDrive2 = new VictorSPX(Constants.RMot2);
   public final VictorSPX m_leftDrive2  = new VictorSPX(Constants.LMot2);
 
-  private final double diametroRoda = 0.06; // 6 cm
+  //private final double diametroRoda = 0.06; // 6 cm
 
   public Drive() {
     // Configura motores e Encoder
@@ -26,15 +26,15 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-   Smart();
+  // Smart();
   }
 
-  public double getDistance() {
-    return encodin.getDistance();
-  }
+  //public double getDistance() {
+   //return encodin.getDistance();
+  //}
 
   public void resetEncoders() {
-    encodin.reset();
+   //encodin.reset();
   }
 
   public void reqDrive() {
@@ -49,13 +49,13 @@ public class Drive extends SubsystemBase {
     m_rightDrive2.setNeutralMode(NeutralMode.Brake);
 
      // Configura encoder
-     double distancePerPulse = (Math.PI * diametroRoda) / 2048;
-     encodin.setDistancePerPulse(distancePerPulse);
-     encodin.setReverseDirection(true);
+     //double distancePerPulse = (Math.PI * diametroRoda) / 2048;
+     //encodin.setDistancePerPulse(distancePerPulse);
+     //encodin.setReverseDirection(true);
   }
 
   public void Smart(){
-    SmartDashboard.putNumber("Encoder Distance", getDistance());
-    SmartDashboard.putNumber("Encoder Pulses", encodin.getRaw());
+    //SmartDashboard.putNumber("Encoder Distance", getDistance());
+    //SmartDashboard.putNumber("Encoder Pulses", encodin.getRaw());
   }
 }

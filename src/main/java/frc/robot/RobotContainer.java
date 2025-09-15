@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.SubSystem.Drive;
 import frc.robot.SubSystem.Vision;
 import frc.robot.SubSystem.BracinSub;
-import frc.robot.command.AutonomousCommand;
-import frc.robot.command.Loc;
-import frc.robot.command.PidCommand;
+import frc.robot.command.Auto.AutonomousCommand;
+import frc.robot.command.Drive.Loc;
+import frc.robot.command.Drive.PidCommand;
 
 public class RobotContainer {
 
@@ -38,7 +38,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(driveSubsystem);
 
     // Initialize Loc command with drive subsystem and joystick
-    locCommand = new Loc(driveSubsystem,joyDeliciu);
+    locCommand = new Loc(driveSubsystem,joyDeliciu,vision,Constants.targetArea);
 
     auto = new AutonomousCommand(driveSubsystem,baby,vision,Constants.targetArea);
 
