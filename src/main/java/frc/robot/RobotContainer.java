@@ -38,9 +38,9 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(driveSubsystem);
 
     // Initialize Loc command with drive subsystem and joystick
-    locCommand = new Loc(driveSubsystem,joyDeliciu,vision,Constants.targetArea);
+    locCommand = new Loc(driveSubsystem,joyDeliciu);
 
-    auto = new AutonomousCommand(driveSubsystem,baby,vision,Constants.targetArea);
+    auto = new AutonomousCommand(driveSubsystem,vision,Constants.targetArea);
 
     // Set default command
     driveSubsystem.setDefaultCommand(locCommand);
