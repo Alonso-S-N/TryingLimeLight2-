@@ -1,6 +1,8 @@
 package frc.robot.command.Auto;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,21 +44,24 @@ public class AutonomousCommand extends Command {
 
   @Override
   public void execute() {
+        Smart();
       switch (state) {
           case procurando:
               runSearch();
+            System.out.println("Procurando");
               break;
 
           case seguindo:
               runTrack();
+             System.out.println("seguindo"); 
               break;
 
           case segurando:
               setDriveSpeeds(0, 0);
+             System.out.println("segurando"); 
               break;
       }
 
- 
       if (timer.get() >= Constants.autonomousTime) {
           finished = true;
       }
@@ -76,6 +81,7 @@ public class AutonomousCommand extends Command {
           setDriveSpeeds(0.2, -0.2); 
       } else {
           setDriveSpeeds(0, 0); 
+          state = State.segurando;
       }
   }
 
@@ -88,7 +94,7 @@ public class AutonomousCommand extends Command {
 
       double tx = vision.getTx();
       double ta = vision.getTa();
-
+      
       double kP_turn = 0.03;
       double kP_forward = 0.1;
 
