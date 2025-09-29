@@ -37,12 +37,12 @@ public class Loc extends Command {
     SmartDashboard.putString("Loc Status", "Rodando");
   }
 
-  private void setDriveSpeeds(double left, double right) {
-    driveSubsystem.m_leftDrive.set(ControlMode.PercentOutput, left);
-    driveSubsystem.m_leftDrive2.set(ControlMode.PercentOutput, left);
-    driveSubsystem.m_rightDrive.set(ControlMode.PercentOutput, right);
-    driveSubsystem.m_rightDrive2.set(ControlMode.PercentOutput, right);
-  }
+private void setDriveSpeeds(double left, double right) {
+    if (speeds != null) {
+        driveSubsystem.rawTank(left, right);
+    } else {
+    }
+}
 
   private void stopDrive() {
     setDriveSpeeds(0, 0);

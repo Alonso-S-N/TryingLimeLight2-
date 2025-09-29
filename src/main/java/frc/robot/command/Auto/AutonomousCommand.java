@@ -128,10 +128,7 @@ public class AutonomousCommand extends Command {
   }
 
   private void setDriveSpeeds(double left, double right) {
-      drive.m_leftDrive.set(ControlMode.PercentOutput, left);
-      drive.m_leftDrive2.set(ControlMode.PercentOutput, left);
-      drive.m_rightDrive.set(ControlMode.PercentOutput, right);
-      drive.m_rightDrive2.set(ControlMode.PercentOutput, right);
+    drive.rawTank(left, right);
   }
 
   public void Smart(){

@@ -8,6 +8,20 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.SubSystem.Drive;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.SubSystem.Drive;
+
 
 
 /**
@@ -23,11 +37,12 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command BracetaCommand;
 
-    /**
-     * This function is run when the robot is first started up and should be used for any
-     * initialization code.
-     */
-    public Robot() {
+  
+      /**
+       * This function is run when the robot is first started up and should be used for any
+       * initialization code.
+       */
+      public Robot() {
       // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
       // autonomous chooser on the dashboard
     }
@@ -36,7 +51,21 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
      BracetaCommand = m_robotContainer.getBracinCommand();
+     Logger.recordMetadata("ProjectName", "Binga"); 
+     Logger.recordMetadata("RuntimeType", RobotBase.getRuntimeType().toString());
+   
+     if (RobotBase.isSimulation()) {
+       // Salva no ./logs (dentro da pasta do projeto) + envia via NT4
+       Logger.addDataReceiver(new WPILOGWriter("logs"));
+       Logger.addDataReceiver(new NT4Publisher());
+     } else {
+       // Robo real → salva no USB (/U) + envia via NT4
+       Logger.addDataReceiver(new WPILOGWriter("/U/logs"));
+       Logger.addDataReceiver(new NT4Publisher());
+     }
+     //Logger.start();
 }
+
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
@@ -71,3 +100,4 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   }
 }
+
