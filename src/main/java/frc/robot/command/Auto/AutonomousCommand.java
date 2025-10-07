@@ -35,6 +35,7 @@ public class AutonomousCommand extends Command {
   @Override
   public void initialize() {
       drive.reqDrive();
+      drive.getPose();
       timer.reset();
       timer.start();
       finished = false;
@@ -64,6 +65,10 @@ public class AutonomousCommand extends Command {
 
       if (timer.get() >= Constants.autonomousTime) {
           finished = true;
+      }
+
+      if (drive.driveSim != null) {
+          drive.simulationPeriodic();
       }
   }
 
@@ -137,6 +142,5 @@ public class AutonomousCommand extends Command {
     SmartDashboard.putNumber("TA", vision.getTa());
     SmartDashboard.putBoolean("finished:", finished);
     SmartDashboard.putBoolean("Targeted", vision.hasTarget());
-    
   }
 }

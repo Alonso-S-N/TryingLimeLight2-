@@ -12,15 +12,38 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.SubSystem.Drive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import org.littletonrobotics.junction.Logger;
+
+import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.SubSystem.Drive;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.SimHooks;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.geometry.Convex;
+import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.world.PhysicsWorld;
+import org.dyn4j.world.World;
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
+import org.ironmaple.simulation.gamepieces.GamePiece;
+import org.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
+import org.ironmaple.simulation.gamepieces.GamePieceProjectile;
+import org.ironmaple.simulation.motorsims.SimulatedBattery;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.Arena2025Reefscape;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeAlgaeOnField;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnField;
+import org.ironmaple.utils.mathutils.GeometryConvertor;
+
+
+
 
 
 
@@ -29,13 +52,16 @@ import frc.robot.SubSystem.Drive;
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   // private Loc locCommand;
   
   Timer timer = new Timer();
   private RobotContainer m_robotContainer;
   private Command m_autonomousCommand;
   private Command BracetaCommand;
+
+  
+
 
   
       /**
@@ -58,12 +84,21 @@ public class Robot extends TimedRobot {
        // Salva no ./logs (dentro da pasta do projeto) + envia via NT4
        Logger.addDataReceiver(new WPILOGWriter("logs"));
        Logger.addDataReceiver(new NT4Publisher());
+
+       Logger.addDataReceiver(new WPILOGWriter("logs"));
+       Logger.addDataReceiver(new NT4Publisher());
+   
      } else {
        // Robo real → salva no USB (/U) + envia via NT4
        Logger.addDataReceiver(new WPILOGWriter("/U/logs"));
        Logger.addDataReceiver(new NT4Publisher());
      }
      //Logger.start();
+     try {
+      Logger.start();
+  } catch (Exception e) {
+      e.printStackTrace();
+  } 
 }
 
   @Override
@@ -98,6 +133,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+  }
+
+  @Override
+  public void simulationPeriodic() {
+       Logger.recordOutput("FieldSimulation/Algae", 
+    SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+       Logger.recordOutput("FieldSimulation/Coral", 
+    SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 }
 
